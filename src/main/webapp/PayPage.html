@@ -1,0 +1,92 @@
+<html>
+    <head>
+        <title>Wooden Nickels Arcade - Payment</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="FinalCSS.css">
+    </head>
+    <body>
+        <h1>Payment</h1>
+        <div class="topnav">
+            <a href="index.html">Home</a>
+            <a href="GameSearchPage.html">Games</a>
+            <a href="ReviewPage.html">Reviews</a>
+            <a href="PackagesPage.html">Packages</a>
+        </div>
+        <div class="form">
+            <label for="amount">Amount</label>
+            <input id="amount" type="text" disabled ><br>
+            <label for="cardtype">Card</label>
+            <select id="cardtype">
+                <option>Mastercard</option>
+                <option>Visa</option>
+                <option>American Express</option>
+            </select><br>
+            <label for="name">Name</label>
+            <input id="name" type="text"><br>
+            <label for="cardnumber">Card Number</label>
+            <input id="cardnumber" type="text"><br>
+            <button id="payButton">Pay</button>
+            <span id="error" class="error"></span>
+        </div>        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script>
+            "use strict";
+            
+            $('#payButton').click(function () {
+                var tid = $('#payButton').data('tid');
+                while($('#name').val() === ""){ 
+                    name = prompt("Please enter your name:","");         
+                    $('#name').val(name);
+                }
+                while($('#cardnumber').val() === "" || $('#cardnumber').val().length !== 16){
+                    while(1){
+                        var cardnumber = prompt("Please enter a valid card number (Must be 16 digits):","");
+                        if(cardnumber.length === 16){
+                            break;
+                        }
+                    }                    
+                    $('#cardnumber').val(cardnumber);
+                }
+                var data = JSON.stringify({
+                    amount: $('#amount').val(),
+                    cardtype: $('#cardtype').val(),
+                    name: $('#name').val(),
+                    cardnumber: $('#cardnumber').val()
+                });
+                $.ajax({
+                    url: 'api/putpay',
+                    type: 'put',
+                    contentType: 'application/json',
+                    data: data,
+                    dataType: 'text',
+                    success: function () {
+                        alert('Thank you for your payment!');
+                        window.location.replace("../WoodenNickelsArcadeNew/index.html");
+                    },
+                    error: function (resp) {
+                        $('#error').html(resp.responseText);
+                    }
+                });
+            });
+            function getCookie(cname) {
+                var name = cname + "=";
+                var decodedCookie = decodeURIComponent(document.cookie);
+                var ca = decodedCookie.split(';');
+                for(var i = 0; i < ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0) === ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(name) === 0) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+                return "";
+            }
+            $(document).ready(function () {
+                $('#amount').val(getCookie("amount"));  
+            });
+        </script>
+    </body>
+</html>

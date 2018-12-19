@@ -1,0 +1,16 @@
+com\woodennickelsarcade\ws\ApplicationConfig.class
+com\woodennickelsarcade\service\ReviewService.class
+com\woodennickelsarcade\ws\GameWS.class
+com\woodennickelsarcade\datastore\Game_.class
+com\woodennickelsarcade\dto\PayDTO.class
+com\woodennickelsarcade\dto\GameDTO.class
+com\woodennickelsarcade\service\GameService.class
+com\woodennickelsarcade\datastore\Review_.class
+com\woodennickelsarcade\datastore\Review.class
+com\woodennickelsarcade\datastore\Pay_.class
+com\woodennickelsarcade\ws\ReviewWS.class
+com\woodennickelsarcade\service\PayService.class
+com\woodennickelsarcade\datastore\Pay.class
+com\woodennickelsarcade\datastore\Game.class
+com\woodennickelsarcade\dto\ReviewDTO.class
+com\woodennickelsarcade\ws\PayWS.class

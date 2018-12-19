@@ -1,0 +1,144 @@
+<html>
+    <head>
+        <title>Wooden Nickels Arcade - Game Search</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="FinalCSS.css">
+    </head>
+    <body>
+        <h1>Browse Our Games</h1>
+        <div class="topnav">
+            <a href="index.html">Home</a>
+            <a href="GameSearchPage.html">Games</a>
+            <a href="ReviewPage.html">Reviews</a>
+            <a href="PackagesPage.html">Packages</a>
+        </div>
+        <label for="filter_options">Filter By Age Rating:</label>
+        <select id="filter_options" onchange="filterGames()">
+            <option value="E">E</option>
+            <option value="E10">E10</option>
+            <option value="M">M</option>
+                    </select>
+        <div id="Gallery"></div>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+        <script>
+        "use strict";
+            function loadGames() {
+                var age = 'E';
+                if (getCookie("age") >= 17){
+                    age = 'M';
+                }else if(getCookie("age") < 17 && getCookie("age") >= 10){
+                    age = 'E10';
+                }
+                var data = JSON.stringify({
+                    agerating: age                    
+                });
+                $.ajax({
+                    url: 'api/game',
+                    type: 'post',
+                    data: data,
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    success: function (data) {
+                        $('#Gallery').empty();
+                        $.each(data, function (i, r) {
+                            var tr = '<div class="gallery">' 
+                                    + '<div class="name">' + r.name + '</div>' 
+                                    + '<div class="agerating">Age Rating: ' + r.agerating + '</div>'
+                                    + '<a target="_blank" href ="'+r.imageurl +'">'
+                                    + '<img src="'+r.imageurl +'"></img>'+ '</a>'                                    
+                                    + '<div class="desc">' + r.description +'</div>'
+                                    + '</div>';
+                            $('#Gallery').append(tr);
+                        });
+                    },
+                    error: function () {
+                        alert('Error');
+                    }
+                });
+            }
+            function filterGames(){
+                var age = 'E';
+                if (getCookie("age") >= 17){
+                    age = 'M';
+                }else if(getCookie("age") < 17 && getCookie("age") >= 10){
+                    age = 'E10';
+                }
+                var selection = document.getElementById("filter_options").value;
+                if (selection === 'M' && getCookie("age") < 17){
+                    alert('Selected Game Rating is not age appropriate');
+                }else if(selection === 'E10' && getCookie("age") < 10){
+                    alert('Selected Game Rating is not age appropriate');
+                }else{
+                    age = document.getElementById("filter_options").value;
+                }
+                var data = JSON.stringify({
+                    agerating: age                    
+                });
+                $.ajax({
+                    url: 'api/game',
+                    type: 'post',
+                    data: data,
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    success: function (data) {
+                        $('#Gallery').empty();
+                        $.each(data, function (i, r) {
+                            var tr = '<div class="gallery">' 
+                                    + '<div class="name">' + r.name + '</div>' 
+                                    + '<div class="agerating">Age Rating: ' + r.agerating + '</div>'
+                                    + '<a target="_blank" href ="'+r.imageurl +'">'
+                                    + '<img src="'+r.imageurl +'"></img>'+ '</a>'                                    
+                                    + '<div class="desc">' + r.description +'</div>'
+                                    + '</div>';
+                            $('#Gallery').append(tr);
+                        });
+                    },
+                    error: function () {
+                        alert('Error');
+                    }
+                });
+            }
+            function setCookie(cname,cvalue,exdays) {
+                var d = new Date();
+                d.setTime(d.getTime() + (exdays*60*1000));
+                var expires = "expires=" + d.toGMTString();
+                document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+            }
+
+            function getCookie(cname) {
+                var name = cname + "=";
+                var decodedCookie = decodeURIComponent(document.cookie);
+                var ca = decodedCookie.split(';');
+                for(var i = 0; i < ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0) === ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(name) === 0) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+                return "";
+            }
+
+            function checkCookie() {
+                var age=getCookie("age");
+                if (age !== "") {
+                    alert("Welcome Back!");
+                } else {
+                   age = prompt("Please enter your age:","");
+                   if (age !== "" && age !== null) {
+                       setCookie("age", age, 15);
+                   }
+                }
+            }
+            
+            $(document).ready(function () {
+                checkCookie();                
+                loadGames();
+            });
+        </script>
+    </body>
+</html>

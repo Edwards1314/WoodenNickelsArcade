@@ -1,0 +1,94 @@
+    <!DOCTYPE html>
+<html>
+    <head>
+        <title>Wooden Nickels Arcade - Reservations</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="FinalCSS.css">
+    </head>
+    <body>    
+        <h1>Guest Feedback</h1>
+        <div class="topnav">
+            <a href="index.html">Home</a>
+            <a href="GameSearchPage.html">Games</a>
+            <a href="ReviewPage.html">Reviews</a>
+            <a href="PackagesPage.html">Packages</a>
+        </div>  
+        <div class="row">
+            <div class="column">
+              <h2>Column</h2>
+                <form>
+                    <label for="name">Your Name Here:</label>
+                    <input id="name" type="text">
+                    <br>Your Feedback:<br>                          
+                    <textarea id="feedback" rows="4" cols="20">
+                    </textarea><br>
+                    <label for="rating_option">Rating:</label>
+                    <select id="rating_option" >
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    <button id="Submit">Submit</button>
+                </form>            
+            </div>
+            <div class="column">
+              <h2>Customer Reviews</h2>
+                <div id="container">
+                </div>            
+            </div>
+          </div>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+        <script>
+        "use strict";
+            function loadReviews() {
+                $.ajax({
+                    url: 'api/review',
+                    type: 'get',
+                    dataType: 'json',
+                    success: function (data) {
+                        $('#container').empty();
+                        $.each(data, function (i, r) {
+                            var tr = '<div class="review-container">' 
+                                    + '<div class="grid-item item1">' + r.name + '</div>'                            
+                                    + '<div class="grid-item item2">' + r.review + '</div>'
+                                    + '<div class="grid-item item3">' + r.rating + '/5'+'</div>'
+                                    + '</div>';
+                            $('#container').append(tr);
+                        });
+                    },
+                    error: function () {
+                        alert('Error');
+                    }
+                });
+            }
+            $('#Submit').click(function () {
+                var name = $('#name').val();
+                var feedback = $('#feedback').val();
+                var rating = document.getElementById("rating_option").value;
+                var data = JSON.stringify({
+                    name: name,
+                    review: feedback,
+                    rating: rating
+                });
+                $.ajax({
+                    url: 'api/postreview',
+                    type: 'post',
+                    contentType: 'application/json',
+                    data: data,
+                    dataType: 'text/plain',
+                    success: function () {
+                        alert('Thank you for your review!');
+                    },
+                    error: function () {
+                    }
+                });
+            });
+            $(document).ready(function () {
+                loadReviews();
+            });
+    </script>
+    </body>
+</html>

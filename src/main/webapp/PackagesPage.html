@@ -1,0 +1,67 @@
+<html>
+    <head>
+        <title>Wooden Nickels Arcade - Packages</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="FinalCSS.css">
+    </head>
+    <body>
+        <h1>Party Packages</h1>
+        <div class="topnav">
+            <a href="index.html">Home</a>
+            <a href="GameSearchPage.html">Games</a>
+            <a href="ReviewPage.html">Reviews</a>
+            <a href="PackagesPage.html">Packages</a>
+        </div>
+        <div class="row">
+        <div class="leftcolumn">
+          
+          <div class="card">
+            <h2>Basic</h2>
+            <p>$50</p>
+            <p>You will have access to a private party room.</p>
+            <button id="Basic">Checkout</button>
+          </div>
+          <div class="card">
+            <h2>Plus</h2>
+            <p>$100</p>
+            <p>You will have your own party room and we will clean up after.</p>
+            <button id="Plus">Checkout</button>
+          </div>
+          <div class="card">
+            <h2>The Total Package</h2>
+            <p>$250</p>
+            <p>You will have your own party room which we will decorate for your party, and clean up after. We take requests on the theme and will do our best to 
+            make your party look great!</p>
+            <button id="Total">Checkout</button>
+          </div>
+        </div>
+        </div>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script>
+            "use strict";
+            
+            $('#Basic').click(function () {
+                var amount = 50;
+                setCookie("amount",amount,15);
+                window.location.replace("../WoodenNickelsArcadeNew/PayPage.html");
+            });
+            $('#Plus').click(function () {
+                var amount = 100;
+                setCookie("amount",amount,15);
+                window.location.replace("../WoodenNickelsArcadeNew/PayPage.html");
+            });
+            $('#Total').click(function () {
+                var amount = 250;
+                setCookie("amount",amount,15);
+                window.location.replace("../WoodenNickelsArcadeNew/PayPage.html");
+            });
+            function setCookie(cname,cvalue,exdays) {
+                var d = new Date();
+                d.setTime(d.getTime() + (exdays*60*1000));
+                var expires = "expires=" + d.toGMTString();
+                document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+            }
+        </script>
+    </body>
+</html>
